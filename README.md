@@ -64,13 +64,18 @@ grep -nE '[)"]\*\*[가-힣]' content/**/*.mdx
 | `<Duplex send="closed" />` | 양방향 통로 (Half Close) |
 | `<Growth values={[1,2,4,8]} />` | 지수 증가 막대 |
 | `<WindowSize rows={[{filled, total, label}]} />` | 윈도우 크기 |
-| `<Stacks left={{title, layers, highlight}} right={...} />` | 프로토콜 스택 비교 |
+| `<Stacks left={{title, layers, highlight}} right={...} />` | 프로토콜 스택 비교. `right`를 빼면 단일 스택 |
+| `<Chain items={[{label, note}]} accentLast />` | 위에서 아래로 내려가는 조회·경유 흐름 |
+| `<FanOut from via targets={[{label, down}]} />` | 트래픽 분산도. `down`은 장애 서버 |
 | `<Life items={[{what, how}]} />` | 번호가 실제 순서를 뜻할 때만 |
-| `<Journey items={[...]} />` | 지금까지의 여정 체인 |
+| `<Journey items={[...]} />` | 지금까지의 여정 체인 (가로) |
 | `<Key>`, `<Deeper>`, `<NextUp>` | 핵심 정리 / 보충 / 다음 장 예고 |
 
 새 도식을 만들면 `diagrams.tsx`에서 export만 하면 MDX에 자동 노출됩니다
 (`src/components/mdx.tsx`가 모듈 전체를 펼쳐서 넘깁니다).
+
+`highlight`는 문자열 하나 또는 배열을 받습니다. `Chain`은 순서가 없는 흐름에,
+`Life`는 번호가 실제 순서를 뜻할 때만 쓰세요.
 
 ### 색을 두 개만 쓰는 이유
 
