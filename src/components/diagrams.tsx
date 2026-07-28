@@ -157,25 +157,112 @@ export function WindowSize({
   );
 }
 
-/* ── 프로토콜 스택 비교 ─────────────────────────── */
-type StackSpec = { title: string; layers: string[]; highlight?: string };
+/* ── 프로토콜 스택 ──────────────────────────────── */
+type StackSpec = {
+  title: string;
+  layers: string[];
+  /** 강조할 계층. 여러 개면 배열로. */
+  highlight?: string | string[];
+};
 
-export function Stacks({ left, right }: { left: StackSpec; right: StackSpec }) {
+function isHighlighted(spec: StackSpec, layer: string) {
+  const h = spec.highlight;
+  return Array.isArray(h) ? h.includes(layer) : h === layer;
+}
+
+export function Stack(spec: StackSpec) {
   return (
-    <div className="stacks">
-      {[left, right].map((s, i) => (
-        <div className="stack" key={i}>
-          <p className="title">{s.title}</p>
-          <ol>
-            {s.layers.map((l) => (
-              <li key={l} className={l === s.highlight ? "hl" : undefined}>
-                {l}
-              </li>
-            ))}
-          </ol>
+    <div className="stack">
+      <p className="title">{spec.title}</p>
+      <ol>
+        {spec.layers.map((l) => (
+          <li key={l} className={isHighlighted(spec, l) ? "hl" : undefined}>
+            {l}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** 두 스택을 나란히 비교한다. right를 빼면 한 개만 그린다. */
+export function Stacks({ left, right }: { left: StackSpec; right?: StackSpec }) {
+  return (
+    <div className={right ? "stacks" : "stacks one"}>
+      <Stack {...left} />
+      {right ? <Stack {...right} /> : null}
+    </div>
+  );
+}
+
+/* ── 위에서 아래로 내려가는 조회/경유 체인 ──────── */
+export function Chain({
+  items,
+  accentLast = false,
+  caption,
+}: {
+  items: { label: string; note?: string }[];
+  accentLast?: boolean;
+  caption?: string;
+}) {
+  const body = (
+    <div className="chain">
+      {items.map((it, i) => (
+        <div
+          className={
+            accentLast && i === items.length - 1 ? "node last" : "node"
+          }
+          key={i}
+        >
+          <span className="dot" />
+          <span>
+            <span className="lab">{it.label}</span>
+            {it.note ? <span className="note">{it.note}</span> : null}
+          </span>
         </div>
       ))}
     </div>
+  );
+
+  return caption ? (
+    <figure>
+      {body}
+      <figcaption>{caption}</figcaption>
+    </figure>
+  ) : (
+    body
+  );
+}
+
+/* ── 한 곳에서 여러 서버로 갈라지는 분산도 ──────── */
+export function FanOut({
+  from,
+  via,
+  targets,
+  caption,
+}: {
+  from: string;
+  via: string;
+  targets: { label: string; down?: boolean }[];
+  caption?: string;
+}) {
+  return (
+    <figure>
+      <div className="fanout">
+        <p className="src">{from}</p>
+        <span className="drop" />
+        <p className="via">{via}</p>
+        <span className="drop" />
+        <div className="targets">
+          {targets.map((t) => (
+            <span key={t.label} className={t.down ? "t down" : "t"}>
+              {t.label}
+            </span>
+          ))}
+        </div>
+      </div>
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
   );
 }
 

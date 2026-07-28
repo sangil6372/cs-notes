@@ -700,6 +700,116 @@ tbody td:first-child {
   font-weight: 700;
 }
 
+.stacks.one {
+  grid-template-columns: minmax(0, 22rem);
+}
+
+/* 조회 / 경유 체인 */
+.chain {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 1.4rem 1.35rem;
+  margin: 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+}
+.chain .node {
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  gap: 0.9rem;
+  padding-bottom: 1rem;
+  position: relative;
+}
+.chain .node::before {
+  content: "";
+  position: absolute;
+  left: calc(0.5rem - 0.5px);
+  top: 0.95rem;
+  bottom: 0;
+  width: 1px;
+  background: var(--rule-2);
+}
+.chain .node:last-child {
+  padding-bottom: 0;
+}
+.chain .node:last-child::before {
+  display: none;
+}
+.chain .dot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--muted);
+  margin: 0.5rem auto 0;
+  display: block;
+}
+.chain .lab {
+  display: block;
+  font-family: var(--mono);
+  font-size: var(--t-sm);
+  color: var(--ink);
+}
+.chain .note {
+  display: block;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+.chain .node.last .dot {
+  background: var(--dir-out);
+  border-color: var(--dir-out);
+}
+.chain .node.last .lab {
+  color: var(--dir-out);
+  font-weight: 700;
+}
+
+/* 트래픽 분산도 */
+.fanout {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 1.4rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: var(--t-sm);
+}
+.fanout .src,
+.fanout .via {
+  margin: 0;
+  text-align: center;
+}
+.fanout .via {
+  border: 1px solid var(--dir-out);
+  color: var(--dir-out);
+  font-weight: 700;
+  padding: 0.5rem 1.25rem;
+}
+.fanout .drop {
+  width: 1px;
+  height: 1.4rem;
+  background: var(--rule-2);
+  display: block;
+}
+.fanout .targets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+}
+.fanout .t {
+  border: 1px solid var(--rule-2);
+  background: var(--paper);
+  padding: 0.5rem;
+  text-align: center;
+}
+.fanout .t.down {
+  color: var(--dead);
+  border-style: dashed;
+  border-color: var(--dead);
+  text-decoration: line-through;
+}
+
 /* 연결의 일생 */
 .life {
   list-style: none;
@@ -807,6 +917,10 @@ tbody td:first-child {
 .key p:last-child {
   margin-bottom: 0;
 }
+/* 핵심 정리를 표로 쓰는 장이 있다 — 바깥 여백은 .key가 이미 갖고 있다 */
+.key .tablewrap {
+  margin: 0;
+}
 
 .deeper {
   margin: 2.5rem 0;
@@ -862,6 +976,9 @@ tbody td:first-child {
 /* ═══════════════════════════════════════════════
    INDEX PAGES
    ═══════════════════════════════════════════════ */
+.partgroup + .partgroup {
+  margin-top: 3.5rem;
+}
 .cards {
   list-style: none;
   margin: 0;
